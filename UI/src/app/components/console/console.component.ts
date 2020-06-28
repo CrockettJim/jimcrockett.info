@@ -30,8 +30,8 @@ export class ConsoleComponent {
   }
   @HostListener('document:keydown', ['$event'])
   handleKeyboardDownEvent(event: KeyboardEvent) {
-    event.preventDefault();
     if (event.key === 'Backspace') {
+      event.preventDefault();
       this.input = this.input.substring(0, this.input.length - 1);
       this.updateScroll();
     }
