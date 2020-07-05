@@ -1,12 +1,14 @@
-import { Directive, Input, OnInit, Renderer2, ElementRef, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ElementRef, Renderer2 } from '@angular/core';
 
-@Directive({
-  selector: '[appTyping]'
+@Component({
+  selector: 'app-typed-line',
+  templateUrl: './typed-line.component.html',
+  styleUrls: ['./typed-line.component.scss']
 })
-export class TypingDirective implements OnInit {
+export class TypedLineComponent implements OnInit {
   @Input() text: string;
   @Output() completed = new EventEmitter();
-  public displayLength = 0;
+  private displayLength = 0;
   constructor(private el: ElementRef, private renderer: Renderer2) { }
   ngOnInit() {
     this.typeText(this);
@@ -15,7 +17,7 @@ export class TypingDirective implements OnInit {
     const totalLength = self.text.length;
     if (self.displayLength < totalLength) {
       self.displayLength += 1;
-      const textContainer = self.renderer.createElement('span');
+      const textContainer = self.renderer.createElement('div');
       const innerText = self.renderer.createText(self.text.substr(0, self.displayLength));
       self.renderer.appendChild(textContainer, innerText);
       const childElements = self.el.nativeElement.children;
@@ -28,4 +30,5 @@ export class TypingDirective implements OnInit {
       self.completed.emit();
     }
   }
+
 }
