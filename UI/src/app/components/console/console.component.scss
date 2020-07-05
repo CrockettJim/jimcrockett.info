@@ -1,4 +1,4 @@
-.console-container {
+.console-container, pre {
     font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
 	display: flex;
 	flex-flow: column;
@@ -9,6 +9,9 @@
 	scrollbar-width: none; /* Firefox */
 	-ms-overflow-style: none;  /* Internet Explorer 10+ */
 	scroll-behavior: smooth;
+}
+pre {
+	margin: 0px;
 }
 .console-container::-webkit-scrollbar { /* most browsers */
 	display: none;

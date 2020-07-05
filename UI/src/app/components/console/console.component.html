@@ -1,9 +1,6 @@
 <div id="console-container" class="console-container">
-    <div id="console" class="console">
-        <div>
-            Welcome to Jim Crockett's Website.
-        </div>
-        <div>It's not finished or really functional yet, but it's a start.</div>
-        <div class="userInput">>{{input}}</div>
+    <div id="console" #console class="console">
+        <div *ngFor="let line of activeLines; let i = index" appTyping [text]="line" (completed)="onLineCompleted(i)"></div>
+        <div *ngIf="allowUserInput" class="userInput">>{{input}}</div>
     </div>
 </div>

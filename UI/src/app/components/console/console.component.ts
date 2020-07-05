@@ -6,7 +6,17 @@ import { Component, HostListener, ViewChild, ElementRef, Renderer2 } from '@angu
   styleUrls: ['./console.component.scss']
 })
 export class ConsoleComponent {
+  @ViewChild('console') private console: ElementRef;
   input = '';
+
+  allowUserInput = false;
+  activeLines = [
+    'Welcome to Jim Crockett\'s Website',
+  ];
+  pendingLines = [
+    'It\'s not finished or really functional yet, but it\'s a start.'
+  ];
+
   constructor(private renderer: Renderer2) { }
 
   @HostListener('document:keypress', ['$event'])
@@ -40,5 +50,13 @@ export class ConsoleComponent {
   private updateScroll(){
     const element = document.getElementById('console-container');
     element.scrollTop = element.scrollHeight;
+  }
+
+  public onLineCompleted(lineNumber) {
+    if (this.pendingLines.length === 0) { this.allowUserInput = true; return; }
+
+    const newActiveLine = this.pendingLines[0];
+    this.activeLines.push(newActiveLine);
+    this.pendingLines.splice(0, 1);
   }
 }
