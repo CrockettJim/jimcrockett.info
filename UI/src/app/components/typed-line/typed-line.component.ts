@@ -7,6 +7,7 @@ import { Component, OnInit, EventEmitter, Output, Input, ElementRef, Renderer2 }
 })
 export class TypedLineComponent implements OnInit {
   @Input() text: string;
+  @Output() updated = new EventEmitter();
   @Output() completed = new EventEmitter();
   private displayLength = 0;
   constructor(private el: ElementRef, private renderer: Renderer2) { }
@@ -25,6 +26,7 @@ export class TypedLineComponent implements OnInit {
         self.renderer.removeChild(self.el.nativeElement, child);
       }
       self.renderer.appendChild(self.el.nativeElement, textContainer);
+      self.updated.emit();
       setTimeout(self.typeText, 100, self);
     } else {
       self.completed.emit();

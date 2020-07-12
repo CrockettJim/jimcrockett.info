@@ -72,18 +72,22 @@ export class ConsoleComponent implements OnInit {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TypedLineComponent);
     const newLine = this.lines.createComponent(componentFactory, this.lines.length);
     newLine.instance.text = this.activeLines[0];
+    newLine.instance.updated.subscribe(updated => this.onLineUpdated());
     newLine.instance.completed.subscribe(completed => this.onLineCompleted(0));
   }
 
+  public onLineUpdated() {
+    this.updateScroll();
+  }
   public onLineCompleted(lineNumber) {
     this.activeLines.splice(0, 1);
     if (this.pendingLines.length === 0) {
       this.allowUserInput = true;
+      this.updateScroll();
     }
     else {
       this.allowUserInput = false;
       this.typeNewLine();
     }
-
   }
 }

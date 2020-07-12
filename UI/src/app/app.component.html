@@ -1,3 +1,16 @@
-<app-resizable-background [width]="2172" [height]="1080">
-  <app-console left="634" top="507" width="617" height="379"></app-console>
-</app-resizable-background>>
+<div *ngIf="isLandscape">
+  <app-resizable-background [width]="2172" [height]="1080">
+    <app-console left="634" top="507" width="617" height="379"></app-console>
+  </app-resizable-background>>
+</div>
+<div *ngIf="!isLandscape">
+  <header>
+    <div>Welcome to Jim Crockett's Website *</div>
+  </header>
+  <section>
+
+  </section>
+  <footer>
+    <div>* This is written for and better viewed on a landscape device.</div>
+  </footer>
+</div>

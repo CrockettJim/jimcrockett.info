@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, BehaviorSubject, interval, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, interval, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ComputerService {
-  private messageSubject: BehaviorSubject<string> = new BehaviorSubject<string>('Welcome to Jim Crockett\'s Website');
+  private messageSubject: BehaviorSubject<string> = new BehaviorSubject<string>('Welcome to Jim\'s Website');
   private sub: Subscription;
   constructor() {
     this.sub = interval(100).subscribe(timer => {
