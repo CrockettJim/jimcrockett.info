@@ -1,5 +1,6 @@
 import { Component, HostListener, ViewChild, ElementRef, Renderer2, OnInit, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { ComputerService } from '../../services/computer.service';
+import { HyperlinkLineComponent } from '../hyperlink-line/hyperlink-line.component';
 import { TypedLineComponent } from '../typed-line/typed-line.component';
 import { SavedUserInputComponent } from '../saved-user-input/saved-user-input.component';
 
@@ -24,6 +25,7 @@ export class ConsoleComponent implements OnInit {
 
   ngOnInit() {
     this.computerService.message().subscribe(line => {
+      if (line == null) { return; }
       this.pendingLines.push(line);
       if (this.activeLines.length === 0) {
         this.typeNewLine();
@@ -39,6 +41,7 @@ export class ConsoleComponent implements OnInit {
       const componentFactory = this.componentFactoryResolver.resolveComponentFactory(SavedUserInputComponent);
       const newInput = this.lines.createComponent(componentFactory, this.lines.length);
       newInput.instance.text = this.input;
+      this.computerService.send(this.input);
       this.input = '';
     } else {
       this.input = this.input + event.key;
@@ -69,9 +72,23 @@ export class ConsoleComponent implements OnInit {
     this.input = '';
     this.allowUserInput = false;
     this.moveNextPendingLineToActiveLine();
+    if (this.activeLines[0].startsWith('<a ')) {
+      this.addHyperlinkLine(this.activeLines[0]);
+    } else {
+      this.addTypedLine(this.activeLines[0]);
+    }
+  }
+  private addHyperlinkLine(line: string) {
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(HyperlinkLineComponent);
+    const newLine = this.lines.createComponent(componentFactory, this.lines.length);
+    newLine.instance.innerHtml = line;
+    this.onLineUpdated();
+    this.onLineCompleted(0);
+  }
+  private addTypedLine(line: string) {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TypedLineComponent);
     const newLine = this.lines.createComponent(componentFactory, this.lines.length);
-    newLine.instance.text = this.activeLines[0];
+    newLine.instance.text = line;
     newLine.instance.updated.subscribe(updated => this.onLineUpdated());
     newLine.instance.completed.subscribe(completed => this.onLineCompleted(0));
   }

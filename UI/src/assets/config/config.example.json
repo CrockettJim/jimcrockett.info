@@ -1,0 +1,6 @@
+{
+    "api": {
+        "baseUrl": "[URL for API]",
+        "key": "[API KEY]"
+    }
+}
