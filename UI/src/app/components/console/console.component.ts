@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild, ElementRef, Renderer2, OnInit, ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
+import { Component, HostListener, ViewChild, Renderer2, OnInit, ViewContainerRef, ComponentFactoryResolver, ChangeDetectorRef } from '@angular/core';
 import { ComputerService } from '../../services/computer.service';
 import { HyperlinkLineComponent } from '../hyperlink-line/hyperlink-line.component';
 import { TypedLineComponent } from '../typed-line/typed-line.component';
@@ -20,7 +20,8 @@ export class ConsoleComponent implements OnInit {
   constructor(
     private renderer: Renderer2,
     private componentFactoryResolver: ComponentFactoryResolver,
-    private computerService: ComputerService
+    private computerService: ComputerService,
+    private readonly changeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -42,6 +43,8 @@ export class ConsoleComponent implements OnInit {
       const newInput = this.lines.createComponent(componentFactory, this.lines.length);
       newInput.instance.text = this.input;
       this.computerService.send(this.input);
+      newInput.instance.updated.subscribe(updated => this.onLineUpdated());
+      newInput.instance.completed.subscribe(completed => this.onLineCompleted(0));
       this.input = '';
     } else {
       this.input = this.input + event.key;
@@ -82,8 +85,8 @@ export class ConsoleComponent implements OnInit {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(HyperlinkLineComponent);
     const newLine = this.lines.createComponent(componentFactory, this.lines.length);
     newLine.instance.innerHtml = line;
-    this.onLineUpdated();
-    this.onLineCompleted(0);
+    newLine.instance.updated.subscribe(updated => this.onLineUpdated());
+    newLine.instance.completed.subscribe(completed => this.onLineCompleted(0));
   }
   private addTypedLine(line: string) {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(TypedLineComponent);
@@ -100,10 +103,12 @@ export class ConsoleComponent implements OnInit {
     this.activeLines.splice(0, 1);
     if (this.pendingLines.length === 0) {
       this.allowUserInput = true;
+      this.changeDetectorRef.detectChanges();
       this.updateScroll();
     }
     else {
       this.allowUserInput = false;
+      this.changeDetectorRef.detectChanges();
       this.typeNewLine();
     }
   }

@@ -27,7 +27,9 @@ export class TypedLineComponent implements OnInit {
       }
       self.renderer.appendChild(self.el.nativeElement, textContainer);
       self.updated.emit();
-      setTimeout(self.typeText, 100, self);
+
+      const wait = 100;
+      setTimeout(self.typeText, wait, self);
     } else {
       self.completed.emit();
     }
