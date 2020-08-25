@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jimcrockett", "jimcrockett.csproj", "{56BBC657-8E19-40E1-9C09-D2ED6B9DBD95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jimcrockett.Data", "..\jimcrockett.Data\jimcrockett.Data.csproj", "{0E66B857-CC2D-4492-8C66-67DD020D3F4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jimcrockett.Data", "..\jimcrockett.Data\jimcrockett.Data.csproj", "{0E66B857-CC2D-4492-8C66-67DD020D3F4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jimcrockett.bot", "..\jimcrockett.bot\jimcrockett.bot.csproj", "{BB6CF92C-E032-4FEE-BEFB-56F0EACC7455}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "jimcrockett.bot.example", "..\jimcrockett.bot.example\jimcrockett.bot.example.csproj", "{4E08993B-5280-4674-A5C1-3C9B882CF655}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{0E66B857-CC2D-4492-8C66-67DD020D3F4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E66B857-CC2D-4492-8C66-67DD020D3F4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E66B857-CC2D-4492-8C66-67DD020D3F4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB6CF92C-E032-4FEE-BEFB-56F0EACC7455}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB6CF92C-E032-4FEE-BEFB-56F0EACC7455}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB6CF92C-E032-4FEE-BEFB-56F0EACC7455}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB6CF92C-E032-4FEE-BEFB-56F0EACC7455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E08993B-5280-4674-A5C1-3C9B882CF655}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E08993B-5280-4674-A5C1-3C9B882CF655}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E08993B-5280-4674-A5C1-3C9B882CF655}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E08993B-5280-4674-A5C1-3C9B882CF655}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
