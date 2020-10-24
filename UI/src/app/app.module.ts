@@ -10,6 +10,8 @@ import { TypedLineComponent } from './components/typed-line/typed-line.component
 import { SavedUserInputComponent } from './components/saved-user-input/saved-user-input.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfigurationService } from './services/configuration.service';
+// import { NewComputerService } from './services/new-computer.service';
+import { ComputerService } from './services/computer.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { ConfigurationService } from './services/configuration.service';
       useFactory: (configService: ConfigurationService) => () => configService.load(),
       deps: [ConfigurationService],
       multi: true
-    }
+    },
+    ComputerService,
   ],
   bootstrap: [AppComponent]
 })

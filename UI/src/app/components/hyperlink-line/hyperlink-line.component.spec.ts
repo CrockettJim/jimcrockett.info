@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HyperlinkLineComponent } from './hyperlink-line.component';
 
@@ -6,7 +6,7 @@ describe('HyperlinkLineComponent', () => {
   let component: HyperlinkLineComponent;
   let fixture: ComponentFixture<HyperlinkLineComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ HyperlinkLineComponent ]
     })

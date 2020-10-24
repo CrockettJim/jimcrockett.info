@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ResizableBackgroundComponent } from './resizable-background.component';
 
@@ -6,7 +6,7 @@ describe('ResizableBackgroundComponent', () => {
   let component: ResizableBackgroundComponent;
   let fixture: ComponentFixture<ResizableBackgroundComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ResizableBackgroundComponent ]
     })

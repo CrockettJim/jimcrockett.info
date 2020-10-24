@@ -22,7 +22,9 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
+            "aot": true,     
+            "allowedCommonJsDependencies": [
+            ],
             "assets": [
               "src/favicon.ico",
               "src/error.html",

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TypedLineComponent } from './typed-line.component';
 
@@ -6,7 +6,7 @@ describe('TypedLineComponent', () => {
   let component: TypedLineComponent;
   let fixture: ComponentFixture<TypedLineComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ TypedLineComponent ]
     })
