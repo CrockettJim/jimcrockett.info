@@ -1,0 +1,311 @@
+{
+  "luis_schema_version": "7.0.0",
+  "intents": [
+    {
+      "name": "Code",
+      "features": []
+    },
+    {
+      "name": "Contact",
+      "features": []
+    },
+    {
+      "name": "Greeting",
+      "features": []
+    },
+    {
+      "name": "Help",
+      "features": []
+    },
+    {
+      "name": "LinkedIn",
+      "features": []
+    },
+    {
+      "name": "None",
+      "features": []
+    },
+    {
+      "name": "Pluralsight",
+      "features": []
+    }
+  ],
+  "entities": [],
+  "hierarchicals": [],
+  "composites": [],
+  "closedLists": [],
+  "prebuiltEntities": [],
+  "utterances": [
+    {
+      "text": "angular",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "c#",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "do you have any certifications",
+      "intent": "Pluralsight",
+      "entities": []
+    },
+    {
+      "text": "do you have any skill assessment results",
+      "intent": "Pluralsight",
+      "entities": []
+    },
+    {
+      "text": "do you have anything to show what your skills are",
+      "intent": "Pluralsight",
+      "entities": []
+    },
+    {
+      "text": "do you have proof of your skills",
+      "intent": "Pluralsight",
+      "entities": []
+    },
+    {
+      "text": "email",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "e-mail",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "github",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "hello",
+      "intent": "Greeting",
+      "entities": []
+    },
+    {
+      "text": "help",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "hey",
+      "intent": "Greeting",
+      "entities": []
+    },
+    {
+      "text": "hi",
+      "intent": "Greeting",
+      "entities": []
+    },
+    {
+      "text": "hola",
+      "intent": "Greeting",
+      "entities": []
+    },
+    {
+      "text": "how do i contact you",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "how do i get in contact with you",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "how do i get to your linkedin",
+      "intent": "LinkedIn",
+      "entities": []
+    },
+    {
+      "text": "how do i interact",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "how do i see the code for this site",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "how do i see the code for this website",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "how do i send you a message",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "how do i send you an electronic mail",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "how do i send you communication",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "how do i talk to you",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "how do i use this",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "how does this work",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "howdy",
+      "intent": "Greeting",
+      "entities": []
+    },
+    {
+      "text": "linkedin",
+      "intent": "LinkedIn",
+      "entities": []
+    },
+    {
+      "text": "luis",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "pluralsight",
+      "intent": "Pluralsight",
+      "entities": []
+    },
+    {
+      "text": "resume",
+      "intent": "LinkedIn",
+      "entities": []
+    },
+    {
+      "text": "source code repository",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "what are you good at",
+      "intent": "Pluralsight",
+      "entities": []
+    },
+    {
+      "text": "what are your skills",
+      "intent": "Pluralsight",
+      "entities": []
+    },
+    {
+      "text": "what code are you using",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "what do i do",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "what is your pluralsight profile",
+      "intent": "Pluralsight",
+      "entities": []
+    },
+    {
+      "text": "what is your work history",
+      "intent": "LinkedIn",
+      "entities": []
+    },
+    {
+      "text": "what should i do",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "what should i type",
+      "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "what's the best way to contact you?",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "what's your email",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "what's your e-mail",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "where have you worked",
+      "intent": "LinkedIn",
+      "entities": []
+    },
+    {
+      "text": "where is your github",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "where is your linked in",
+      "intent": "LinkedIn",
+      "entities": []
+    },
+    {
+      "text": "where is your linkedin profile",
+      "intent": "LinkedIn",
+      "entities": []
+    },
+    {
+      "text": "where is your resume",
+      "intent": "LinkedIn",
+      "entities": []
+    },
+    {
+      "text": "where is your source code",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "who are your previous employers",
+      "intent": "LinkedIn",
+      "entities": []
+    },
+    {
+      "text": "yo",
+      "intent": "Greeting",
+      "entities": []
+    }
+  ],
+  "versionId": "0.1",
+  "name": "jimcrockett",
+  "desc": "jimcrockett.info",
+  "culture": "en-us",
+  "tokenizerVersion": "1.0.0",
+  "patternAnyEntities": [],
+  "regex_entities": [],
+  "phraselists": [],
+  "regex_features": [],
+  "patterns": [],
+  "settings": [
+    {
+      "name": "NormalizePunctuation",
+      "value": "true"
+    }
+  ]
+}
