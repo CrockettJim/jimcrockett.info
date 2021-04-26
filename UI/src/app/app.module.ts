@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ConfigurationService } from './services/configuration.service';
 // import { NewComputerService } from './services/new-computer.service';
 import { ComputerService } from './services/computer.service';
+import { AlternateViewComponent } from './components/alternate-view/alternate-view.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ComputerService } from './services/computer.service';
     ConsoleComponent,
     ResizableBackgroundComponent,
     TypedLineComponent,
-    SavedUserInputComponent
+    SavedUserInputComponent,
+    AlternateViewComponent
   ],
   imports: [
     BrowserModule,
