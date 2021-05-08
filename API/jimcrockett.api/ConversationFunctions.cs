@@ -74,7 +74,8 @@ namespace jimcrockett
             switch (userIntent)
             {
                 case Intent.Code:
-                    messages.Add("This site is made with Angular utilizing the LUIS engine.  The source code in GitHub will be available soon.");
+                    messages.Add("This site is made with Angular utilizing the MS LUIS engine.  The source code in GitHub is available at:");
+                    messages.Add("<a href=\"https://github.com/CrockettJim/jimcrockett.info\" target=\"jcGitHub\">Site's GitHub</a>");
                     break;
                 case Intent.Contact:
                     messages.Add("You can e-mail Jim at:");
