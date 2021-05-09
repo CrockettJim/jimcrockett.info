@@ -24,7 +24,7 @@ export class ComputerService {
   private giveDefaultResponse() {
     this.messageSubject.next('I\'m having trouble right now, so here are some helpful links:');
     this.messageSubject.next('<a href="https://www.linkedin.com/in/crockettjim/" target="jcLinkedIn">My LinkedIn</a>');
-    this.messageSubject.next('<a href="https://app.pluralsight.com/profile/jim-crockett-76" target="jcPluralsight">My Pluralsight Achievements</a>');
+    this.messageSubject.next('<a href="https://app.pluralsight.com/profile/jim-crockett" target="jcPluralsight">My Pluralsight Achievements</a>');
   }
 
   public message(): Observable<string> {

@@ -93,7 +93,7 @@ namespace jimcrockett
                     break;
                 case Intent.Pluralsight:
                     messages.Add("You can view Jim's skill assessments and Pluralsight profile at:");
-                    messages.Add("<a href=\"https://app.pluralsight.com/profile/jim-crockett-76\" target=\"jcPluralsight\">Pluralsight Achievements</a>");
+                    messages.Add("<a href=\"https://app.pluralsight.com/profile/jim-crockett\" target=\"jcPluralsight\">Pluralsight Achievements</a>");
                     break;
                 case Intent.None:
                 default:

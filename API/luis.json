@@ -57,6 +57,16 @@
       "entities": []
     },
     {
+      "text": "code",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "contact",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
       "text": "cool!",
       "intent": "None",
       "entities": []
@@ -82,13 +92,23 @@
       "entities": []
     },
     {
+      "text": "e-mail",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
       "text": "email",
       "intent": "Contact",
       "entities": []
     },
     {
-      "text": "e-mail",
+      "text": "get in touch",
       "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "git",
+      "intent": "Code",
       "entities": []
     },
     {
@@ -139,6 +159,21 @@
     {
       "text": "how are you?",
       "intent": "Greeting",
+      "entities": []
+    },
+    {
+      "text": "how can i get in touch with jim?",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "how did you make this site?",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "how do i contact jim?",
+      "intent": "Contact",
       "entities": []
     },
     {
@@ -202,6 +237,16 @@
       "entities": []
     },
     {
+      "text": "how does this work?",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "how is this site made?",
+      "intent": "Code",
+      "entities": []
+    },
+    {
       "text": "how tall are you?",
       "intent": "None",
       "entities": []
@@ -209,6 +254,11 @@
     {
       "text": "howdy",
       "intent": "Greeting",
+      "entities": []
+    },
+    {
+      "text": "in touch",
+      "intent": "Contact",
       "entities": []
     },
     {
@@ -229,6 +279,11 @@
     {
       "text": "pluralsight",
       "intent": "Pluralsight",
+      "entities": []
+    },
+    {
+      "text": "repository",
+      "intent": "Code",
       "entities": []
     },
     {
@@ -259,6 +314,11 @@
     {
       "text": "what do i do",
       "intent": "Help",
+      "entities": []
+    },
+    {
+      "text": "what does jim know?",
+      "intent": "Pluralsight",
       "entities": []
     },
     {
@@ -297,6 +357,11 @@
       "entities": []
     },
     {
+      "text": "what skills does jim have?",
+      "intent": "Pluralsight",
+      "entities": []
+    },
+    {
       "text": "what?",
       "intent": "Help",
       "entities": []
@@ -307,12 +372,17 @@
       "entities": []
     },
     {
-      "text": "what's your email",
+      "text": "what's the best way to reach jim?",
       "intent": "Contact",
       "entities": []
     },
     {
       "text": "what's your e-mail",
+      "intent": "Contact",
+      "entities": []
+    },
+    {
+      "text": "what's your email",
       "intent": "Contact",
       "entities": []
     },
@@ -329,6 +399,16 @@
     {
       "text": "where have you worked",
       "intent": "LinkedIn",
+      "entities": []
+    },
+    {
+      "text": "where is the source code for this site?",
+      "intent": "Code",
+      "entities": []
+    },
+    {
+      "text": "where is the source?",
+      "intent": "Code",
       "entities": []
     },
     {
