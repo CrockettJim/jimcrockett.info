@@ -7,7 +7,6 @@ import { DeviceDetectorService, DeviceInfo } from 'ngx-device-detector';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Jim Crockett';
   isLandscape = window.innerHeight < window.innerWidth;
   deviceInfo: DeviceInfo;
 
