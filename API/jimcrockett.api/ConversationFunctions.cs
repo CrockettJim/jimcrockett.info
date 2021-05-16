@@ -99,7 +99,7 @@ namespace jimcrockett
                 default:
                     messages.Add("I'm limited with my responses.  For now, here are some helpful links:");
                     messages.Add("<a href=\"https://www.linkedin.com/in/crockettjim/\" target=\"jcLinkedIn\">LinkedIn Profile</a>");
-                    messages.Add("<a href=\"https://app.pluralsight.com/profile/jim-crockett-76\" target=\"jcPluralsight\">Pluralsight Achievements</a>");
+                    messages.Add("<a href=\"https://app.pluralsight.com/profile/jim-crockett\" target=\"jcPluralsight\">Pluralsight Achievements</a>");
                     break;
             }
 
