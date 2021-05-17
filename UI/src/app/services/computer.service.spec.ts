@@ -54,7 +54,7 @@ describe('ComputerService', () => {
     expect(request.request.method).toBe('POST');
     expect(request.request.body.userInput).toBe(expectedMessage);
   });
-  it('should return the results of the message', () => {
+  it('should return the results of the message', fakeAsync(() => {
     const expected = [ 'test results' ];
     const expectedResponse = { id: 1, messages: expected };
     const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + '/SendMessage';
@@ -67,7 +67,47 @@ describe('ComputerService', () => {
 
     const request = httpTestingController.expectOne(expectedUrl);
     request.flush(expectedResponse);
-  });
+
+    flush();
+
+    expect(results.slice(1, results.length)).toEqual(expected);
+  }));
+
+  it('should skip sending the conversation results if no value returned', fakeAsync(() => {
+    const expected = [ 'test results' ];
+    const expectedResponse = null;
+    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + '/SendMessage';
+    const results = [];
+
+    service.send('test');
+    service.message().subscribe(result => {
+      results.push(result);
+    });
+
+    const request = httpTestingController.expectOne(expectedUrl);
+    request.flush(expectedResponse);
+
+    flush();
+
+    expect(results.length).toEqual(1);
+  }));
+  it('should skip the conversation results if there are no messages', fakeAsync(() => {
+    const expectedResponse = { id: 1, messages: null };
+    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + '/SendMessage';
+    const results = [];
+
+    service.send('test');
+    service.message().subscribe(result => {
+      results.push(result);
+    });
+
+    const request = httpTestingController.expectOne(expectedUrl);
+    request.flush(expectedResponse);
+
+    flush();
+
+    expect(results.length).toEqual(1);
+  }));
   it('should return a default response on error', fakeAsync(() => {
     const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + '/SendMessage';
     const expected = (service as any).defaultResponse;
