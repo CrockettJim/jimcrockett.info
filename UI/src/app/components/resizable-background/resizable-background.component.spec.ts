@@ -16,10 +16,22 @@ describe('ResizableBackgroundComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ResizableBackgroundComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should recalculate on resize event', () => {
+    spyOn(component, 'onResize');
+
+    window.dispatchEvent(new Event('resize'));
+
+    expect(component.onResize).toHaveBeenCalled();
+  });
+
+  it('should call resize function on resize event', () => {
+    spyOn(component, 'resize');
+
+    window.dispatchEvent(new Event('resize'));
+
+    expect(component.resize).toHaveBeenCalled();
+  });
+
 });
