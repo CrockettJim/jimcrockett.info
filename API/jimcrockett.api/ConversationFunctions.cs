@@ -1,10 +1,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using jimcrockett.Data;
@@ -12,8 +8,11 @@ using System.Linq;
 using System.Collections.Generic;
 using jimcrockett.chat.Services;
 using jimcrockett.chat.Types;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Functions.Worker;
 
-namespace jimcrockett
+namespace jimcrockett.api
 {
     public class ConversationFunctions
     {
@@ -24,7 +23,7 @@ namespace jimcrockett
             dbContext = jcdbContext;
             chatService = service;
         }
-        [FunctionName("StartConversation")]
+        [Function("StartConversation")]
         public async Task<IActionResult> StartConversation(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
@@ -49,7 +48,7 @@ namespace jimcrockett
             });
         }
 
-        [FunctionName("SendMessage")]
+        [Function("SendMessage")]
         public async Task<IActionResult> SendMessage(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
@@ -110,7 +109,7 @@ namespace jimcrockett
             });
         }
 
-        [FunctionName("EndConversation")]
+        [Function("EndConversation")]
         public async Task<IActionResult> EndConversation(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
