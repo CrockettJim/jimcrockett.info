@@ -39,13 +39,13 @@ describe('ComputerService', () => {
   }));
 
   it('should initiate a conversation with the api', () => {
-    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + '/StartConversation';
+    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + 'StartConversation';
 
     const request = httpTestingController.expectOne(expectedUrl);
     expect(request.request.method).toBe('POST');
   });
   it('should send a message to the api', () => {
-    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + '/SendMessage';
+    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + 'SendMessage';
     const expectedMessage = 'test';
 
     service.send(expectedMessage);
@@ -57,7 +57,7 @@ describe('ComputerService', () => {
   it('should return the results of the message', fakeAsync(() => {
     const expected = [ 'test results' ];
     const expectedResponse = { id: 1, messages: expected };
-    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + '/SendMessage';
+    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + 'SendMessage';
     const results = [];
 
     service.send('test');
@@ -76,7 +76,7 @@ describe('ComputerService', () => {
   it('should skip sending the conversation results if no value returned', fakeAsync(() => {
     const expected = [ 'test results' ];
     const expectedResponse = null;
-    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + '/SendMessage';
+    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + 'SendMessage';
     const results = [];
 
     service.send('test');
@@ -93,7 +93,7 @@ describe('ComputerService', () => {
   }));
   it('should skip the conversation results if there are no messages', fakeAsync(() => {
     const expectedResponse = { id: 1, messages: null };
-    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + '/SendMessage';
+    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + 'SendMessage';
     const results = [];
 
     service.send('test');
@@ -109,7 +109,7 @@ describe('ComputerService', () => {
     expect(results.length).toEqual(1);
   }));
   it('should return a default response on error', fakeAsync(() => {
-    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + '/SendMessage';
+    const expectedUrl = TestBed.inject(ConfigurationService).api.baseUrl + 'SendMessage';
     const expected = (service as any).defaultResponse;
     const results = [];
 

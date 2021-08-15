@@ -47,7 +47,7 @@ export class ComputerService {
       lastOutput: this.messageSubject.value
     };
     this.http
-    .post<ExpectedResponse>(this.configs.api.baseUrl + '/' + url, data, { headers: this.configs.apiHeaders() })
+    .post<ExpectedResponse>(this.configs.api.baseUrl + url, data, { headers: this.configs.apiHeaders() })
     .pipe(
       catchError(this.catchConversationError)
     )
