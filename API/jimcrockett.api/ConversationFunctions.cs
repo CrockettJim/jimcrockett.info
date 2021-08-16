@@ -1,16 +1,15 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using jimcrockett.Data;
+using jimcrockett.chat.Services;
 using System.Linq;
 using System.Collections.Generic;
-using jimcrockett.chat.Services;
-using jimcrockett.chat.Types;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
+using jimcrockett.chat.Types;
 
 namespace jimcrockett.api
 {
@@ -24,11 +23,12 @@ namespace jimcrockett.api
             chatService = service;
         }
         [Function("StartConversation")]
-        public async Task<IActionResult> StartConversation(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
-            ILogger log)
+        public async Task<HttpResponseData> StartConversation([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
+            FunctionContext executionContext)
         {
-            string ipAddress = req.HttpContext.Connection.RemoteIpAddress.ToString();
+            var log = executionContext.GetLogger<ConversationFunctions>();
+            // string ipAddress = req.HttpContext.Connection.RemoteIpAddress.ToString();
+            string ipAddress = "unknown";
             log.LogInformation($"Starting conversation with {ipAddress}");
 
 
@@ -39,21 +39,26 @@ namespace jimcrockett.api
 
             dbContext.Logs.Add(id, ipAddress, "Started Conversation");
 
-            return new OkObjectResult(new
+            var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
+            response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+            response.WriteString(JsonConvert.SerializeObject(new
             {
                 id = id,
                 messages = new string[] {
                     "Feel free to type something to me."
                 }
-            });
+            }));
+
+            return response;
         }
 
         [Function("SendMessage")]
-        public async Task<IActionResult> SendMessage(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
-            ILogger log)
+        public async Task<HttpResponseData> SendMessage([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
+            FunctionContext executionContext)
         {
-            string ipAddress = req.HttpContext.Connection.RemoteIpAddress.ToString();
+            var log = executionContext.GetLogger<ConversationFunctions>();
+            // string ipAddress = req.HttpContext.Connection.RemoteIpAddress.ToString();
+            string ipAddress = "unknown";
             log.LogInformation($"Received message from {ipAddress}");
 
 
@@ -102,19 +107,25 @@ namespace jimcrockett.api
                     break;
             }
 
-            return new OkObjectResult(new
+
+            var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
+            response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+            response.WriteString(JsonConvert.SerializeObject(new
             {
                 id = id,
                 messages = messages.ToArray()
-            });
+            }));
+
+            return response;
         }
 
         [Function("EndConversation")]
-        public async Task<IActionResult> EndConversation(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
-            ILogger log)
+        public async Task<HttpResponseData> EndConversation([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req,
+            FunctionContext executionContext)
         {
-            string ipAddress = req.HttpContext.Connection.RemoteIpAddress.ToString();
+            var log = executionContext.GetLogger<ConversationFunctions>();
+            // string ipAddress = req.HttpContext.Connection.RemoteIpAddress.ToString();
+            string ipAddress = "unknown";
             log.LogInformation($"Ending conversation with {ipAddress}");
 
 
@@ -125,13 +136,18 @@ namespace jimcrockett.api
 
             dbContext.Logs.Add(id, ipAddress, "Ended Conversation");
 
-            return new OkObjectResult(new
+
+            var response = req.CreateResponse(System.Net.HttpStatusCode.OK);
+            response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+            response.WriteString(JsonConvert.SerializeObject(new
             {
                 id = id,
                 messages = new string[] {
                     "Goodbye"
                 }
-            });
+            }));
+
+            return response;
         }
     }
 }
