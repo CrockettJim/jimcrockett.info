@@ -27,8 +27,7 @@ namespace jimcrockett.api
             FunctionContext executionContext)
         {
             var log = executionContext.GetLogger<ConversationFunctions>();
-            // string ipAddress = req.HttpContext.Connection.RemoteIpAddress.ToString();
-            string ipAddress = "unknown";
+            string ipAddress = GetIpFromRequestHeaders(req);
             log.LogInformation($"Starting conversation with {ipAddress}");
 
 
@@ -57,8 +56,7 @@ namespace jimcrockett.api
             FunctionContext executionContext)
         {
             var log = executionContext.GetLogger<ConversationFunctions>();
-            // string ipAddress = req.HttpContext.Connection.RemoteIpAddress.ToString();
-            string ipAddress = "unknown";
+            string ipAddress = GetIpFromRequestHeaders(req);
             log.LogInformation($"Received message from {ipAddress}");
 
 
@@ -124,8 +122,7 @@ namespace jimcrockett.api
             FunctionContext executionContext)
         {
             var log = executionContext.GetLogger<ConversationFunctions>();
-            // string ipAddress = req.HttpContext.Connection.RemoteIpAddress.ToString();
-            string ipAddress = "unknown";
+            string ipAddress = GetIpFromRequestHeaders(req);
             log.LogInformation($"Ending conversation with {ipAddress}");
 
 
@@ -148,6 +145,13 @@ namespace jimcrockett.api
             }));
 
             return response;
+        }
+        private static string GetIpFromRequestHeaders(HttpRequestData request)
+        {
+            var forwardedFor = request.Headers.FirstOrDefault(_ => _.Key == "X-Forwarded-For");
+            if (forwardedFor.Value == null) { return "unknown"; }
+
+            return string.Join(",", forwardedFor.Value);
         }
     }
 }
