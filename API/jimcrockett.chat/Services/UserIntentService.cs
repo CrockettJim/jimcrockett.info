@@ -36,7 +36,7 @@ namespace jimcrockett.chat.Services
 
             if (prediction?.prediction?.topIntent != null && 
                 prediction?.prediction?.intents != null &&
-                int.Parse(prediction.prediction.intents[prediction.prediction.topIntent]?.score ?? 0) < .8)
+                decimal.Parse(prediction.prediction.intents[prediction.prediction.topIntent]?.score ?? 0) < .8)
             {
                 predictedIntent = Intent.None;
             }
