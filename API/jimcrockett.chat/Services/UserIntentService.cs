@@ -34,12 +34,12 @@ namespace jimcrockett.chat.Services
             Intent predictedIntent = Intent.None;
             Enum.TryParse<Intent>(prediction?.prediction?.topIntent?.ToString() ?? "", out predictedIntent);
 
-            if (prediction?.prediction?.topIntent != null && 
-                prediction?.prediction?.intents != null &&
-                decimal.Parse(prediction.prediction.intents[prediction.prediction.topIntent]?.score ?? 0) < .8)
-            {
-                predictedIntent = Intent.None;
-            }
+            //if (prediction?.prediction?.topIntent != null && 
+            //    prediction?.prediction?.intents != null &&
+            //    decimal.Parse(prediction.prediction.intents[prediction.prediction.topIntent]?.score ?? 0) < .8)
+            //{
+            //    predictedIntent = Intent.None;
+            //}
 
             _logger.LogInformation("Parsed intent: " + predictedIntent.ToString());
             return predictedIntent;
