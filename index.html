@@ -1,0 +1,632 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Send, Bot, User, Sparkles, MessageCircle, Linkedin, Mail, Award, ThumbsDown, Check } from 'lucide-react';
+
+// ============================================================================
+// KNOWLEDGE BASE - Edit this section to update what the chatbot knows
+// ============================================================================
+
+const KNOWLEDGE_BASE = {
+  current: {
+    role: "Senior Software Engineer",
+    company: "Versivo",
+    location: "St. Petersburg, Florida",
+    yearsExperience: 25,
+    startedAt: "June 2021"
+  },
+  
+  contact: {
+    linkedin: "https://www.linkedin.com/in/crockettjim",
+    pluralsight: "https://app.pluralsight.com/profile/jim-crockett",
+    email: "contact@jimcrockett.info",
+    location: "St. Petersburg, Florida",
+    followers: 264
+  },
+
+  certifications: [
+    "Hyland Certified Developer Specialist 2023 (Valid through December 2025)"
+  ],
+
+  summary: "Experienced Senior Application Developer with over 25 years of demonstrated history of eliciting requirements and designing quality systems. Skilled in full-stack development, including multiple database technologies, domain-driven designs, and multiple presentation languages, while having a strong background in System Integrations and Business Intelligence."
+};
+
+// ============================================================================
+// RESPONSE PATTERNS - Add new patterns and responses here
+// ============================================================================
+// Format: { pattern: /regex/, response: "text" or function }
+// You can use ${KNOWLEDGE_BASE.field} to reference knowledge base data
+
+const RESPONSE_PATTERNS = [
+  // Greetings
+  {
+    pattern: /^(hi|hello|hey|greetings|good morning|good afternoon|good evening)/,
+    responses: [
+      "Hello! I'm here to tell you about Jim Crockett's impressive career. What would you like to know?",
+      "Hi there! I can share information about Jim's 25+ years of experience in software development. Ask me anything!",
+      "Hey! Ready to learn about Jim's journey from intern to Senior Software Engineer? What interests you?"
+    ]
+  },
+
+  // Current role
+  {
+    pattern: /current|now|present|today|these days|currently/,
+    response: "Jim is currently a Senior Software Engineer at Versivo, where he's been since June 2021. He's based in St. Petersburg, Florida, and focuses on delivering enterprise-grade software solutions, architecting scalable full-stack applications, and implementing domain-driven design principles."
+  },
+
+  // Overall experience
+  {
+    pattern: /experience|years|how long|career|background|history/,
+    response: "Jim has over 25 years of experience in software development! His career started as an intern at Raymond James Financial in 1998 and progressed through multiple roles including Application Administrator, Software Engineer, Solution Architect, and more. He's worked at Raymond James (16 years), Bond-Pro, Sylint Group, and currently Versivo. His journey shows consistent growth from intern to senior technical leadership positions."
+  },
+
+  // Raymond James
+  {
+    pattern: /raymond james|rj financial/,
+    response: "Jim spent an impressive 16 years at Raymond James Financial (1998-2014), starting as an intern in Imaging Development and progressing all the way to Solution Architect. His roles included: Application Administrator, Software Engineer focused on Infrastructure & Integrations, Software Engineer for Business Intelligence, Solution Architect for BI, and finally Solution Architect. This progression shows his versatility and consistent value delivery."
+  },
+
+  // Versivo
+  {
+    pattern: /versivo|current role|current job|current position/,
+    response: "Jim has been a Senior Software Engineer at Versivo since June 2021. In this role, he delivers enterprise-grade software solutions, architects scalable full-stack applications, implements domain-driven design principles, and drives technical excellence and best practices across the team."
+  },
+
+  // Sylint Group
+  {
+    pattern: /sylint/,
+    response: "At Sylint Group (Feb 2018 - Jun 2021), Jim was a Senior Application Developer/Architect. He led architectural design for enterprise applications, designed and implemented system integration solutions, mentored development teams on best practices, and delivered high-quality, maintainable code solutions."
+  },
+
+  // Bond-Pro
+  {
+    pattern: /bond.?pro/,
+    response: "Jim worked at Bond-Pro, LLC for over 2 years (Nov 2015 - Feb 2018) in two key roles: Application Development Manager (managing the full development lifecycle and leading teams) and Senior Lead Developer (providing technical leadership and designing core features). This demonstrates both his management capabilities and deep technical skills."
+  },
+
+  // Full-stack development
+  {
+    pattern: /full.?stack|frontend|backend|web dev/,
+    response: "Jim is highly skilled in full-stack development! This includes frontend frameworks, backend services, API design and integration, and multiple presentation languages. He's worked across the entire stack throughout his career, from user interfaces to backend services and everything in between."
+  },
+
+  // Database skills
+  {
+    pattern: /database|sql|data model|query/,
+    response: "Jim has deep expertise with database technologies including relational databases, database design, query optimization, and data modeling. He's worked with multiple database technologies throughout his 25+ year career and has a strong foundation in designing efficient, scalable data solutions."
+  },
+
+  // Business Intelligence
+  {
+    pattern: /business intelligence|bi|analytics|reporting|etl/,
+    response: "Business Intelligence is one of Jim's core strengths! He spent years at Raymond James as a Software Engineer and Solution Architect specifically focused on BI. His expertise includes data analytics, reporting solutions, ETL processes, performance metrics, and BI architecture. He knows how to turn data into actionable insights."
+  },
+
+  // Architecture
+  {
+    pattern: /architect|architecture|design|domain.?driven|ddd/,
+    response: "Jim excels at software architecture! He specializes in domain-driven design (DDD), solution architecture, system integration, enterprise patterns, and microservices. He's held Solution Architect roles at Raymond James and Senior Application Developer/Architect at Sylint Group, where he led architectural design for enterprise applications."
+  },
+
+  // General skills
+  {
+    pattern: /skill|technology|tech stack|what.*know|expertise/,
+    response: "Jim has a comprehensive skill set including: Full-stack development, multiple database technologies, business intelligence, domain-driven design, system integration, middleware solutions, and technical leadership. He's spent 25+ years mastering both technical execution and strategic architecture. His background spans everything from frontend to backend, databases to DevOps, and individual contribution to team leadership."
+  },
+
+  // Leadership
+  {
+    pattern: /lead|manage|mentor|team|leadership/,
+    response: "Jim has strong leadership experience! He was an Application Development Manager at Bond-Pro where he managed the entire application development lifecycle and led teams of developers. He also served as Senior Lead Developer, providing technical leadership. Throughout his career, he's been known for mentoring development teams, eliciting requirements from stakeholders, and strategic planning. He combines technical expertise with people skills."
+  },
+
+  // Certifications
+  {
+    pattern: /certif|hyland|credential/,
+    response: "Jim holds the Hyland Certified Developer Specialist 2023 certification, issued by Hyland in December 2023 and valid through December 2025. This demonstrates his expertise with Hyland's enterprise content management solutions."
+  },
+
+  // Education
+  {
+    pattern: /education|school|college|university|degree/,
+    response: "Jim attended Dunedin High School from 1995-1999. His real education came from hands-on experience, starting as an intern at Raymond James in 1998 and progressing through increasingly complex technical roles over 25+ years. He's a perfect example of learning by doing and continuous professional growth."
+  },
+
+  // Location
+  {
+    pattern: /where|location|live|based|city/,
+    response: `Jim is based in ${KNOWLEDGE_BASE.contact.location}. Throughout his career, he's worked in the Tampa/St. Petersburg and Sarasota areas.`
+  },
+
+  // Contact
+  {
+    pattern: /contact|reach|email|linkedin|hire|connect/,
+    response: `You can connect with Jim through several channels:\n• Email: ${KNOWLEDGE_BASE.contact.email}\n• LinkedIn: linkedin.com/in/crockettjim (${KNOWLEDGE_BASE.contact.followers} followers)\n• Pluralsight Profile: app.pluralsight.com/profile/jim-crockett\n\nHe's open to discussing new opportunities and collaborations!`
+  },
+
+  // Strengths
+  {
+    pattern: /strength|good at|excel|standout|best|why hire/,
+    response: "Jim's key strengths include his ability to combine strong technical skills with strategic architectural thinking. He excels at eliciting requirements, designing quality systems, and delivering enterprise-grade solutions. With 25+ years spanning full-stack development, databases, BI, and system integration, he brings both depth and breadth. His 16-year progression at Raymond James shows loyalty and consistent value delivery. He's also known for mentorship and collaboration."
+  },
+
+  // Projects
+  {
+    pattern: /project|achieve|accomplish|built|created|developed/,
+    response: "Throughout his career, Jim has delivered numerous enterprise-scale projects. At Versivo, he architects scalable full-stack applications. At Sylint Group, he led architectural design for enterprise applications. At Bond-Pro, he managed complex development initiatives. At Raymond James, he progressed from intern to Solution Architect, working on infrastructure, middleware, integrations, and business intelligence solutions that served a major financial institution. His career represents 100+ successfully delivered projects."
+  },
+
+  // Career growth
+  {
+    pattern: /grow|progress|career path|advance|journey/,
+    response: "Jim's career growth is impressive! He started as an intern in 1998 at Raymond James and systematically progressed: Intern → Application Administrator → Software Engineer (Infrastructure) → Software Engineer (BI) → Solution Architect (BI) → Solution Architect → roles at other companies → Application Development Manager → Senior Application Developer/Architect → Senior Software Engineer. This shows consistent advancement, versatility across domains, and deepening expertise over 25+ years."
+  },
+
+  // Recommendations
+  {
+    pattern: /recommend|testimonial|reference|what.*say/,
+    response: `Jim has received professional recommendations on LinkedIn. One colleague, Lainey Rhodes, noted: "Jim was always one of my favorite coworkers at Raymond James... He has the rare ability to combine a strong technical skill set and a strategic architectural viewpoint with a winning personality, creative thinking, and the ability [to collaborate effectively]." This highlights both his technical excellence and interpersonal skills.`
+  },
+
+  // System integration
+  {
+    pattern: /integration|middleware|api|connect/,
+    response: "System integration is one of Jim's core competencies! He spent years as a Software Engineer focused specifically on Infrastructure, Middleware & Integrations at Raymond James. He excels at API design and integration, middleware solutions, and connecting disparate systems. His background includes designing integration solutions that enable different applications and services to work together seamlessly."
+  },
+
+  // Work style
+  {
+    pattern: /work style|approach|methodology|how.*work|process/,
+    response: "Jim's approach emphasizes quality, collaboration, and strategic thinking. He's skilled at requirements elicitation - working with stakeholders to truly understand needs before building solutions. He implements domain-driven design principles and best practices. Having worked in both leadership and individual contributor roles, he understands the full development lifecycle. His 16 years at one company suggests he values deep engagement and long-term relationships."
+  },
+
+  // Age/Timeline
+  {
+    pattern: /age|old|when.*start|born/,
+    response: "While I don't have Jim's exact age, I can tell you his career spans 25+ years. He started as an intern in 1998 and attended high school from 1995-1999, which gives you a sense of his professional timeline. What matters most is his extensive, proven track record delivering technical solutions!"
+  },
+
+  // Who is Jim
+  {
+    pattern: /who is|tell me about|about jim|know.*jim/,
+    response: `Jim Crockett is a Senior Software Engineer with 25+ years of experience. He currently works at Versivo in St. Petersburg, Florida. He's an expert in full-stack development, databases, business intelligence, and system architecture. His career highlights include 16 years at Raymond James Financial (progressing from intern to Solution Architect), management roles at Bond-Pro, and architectural leadership at Sylint Group. He's Hyland certified and known for combining technical excellence with strategic thinking and collaboration.`
+  },
+
+  // Availability
+  {
+    pattern: /available|hire|open to|looking|opportunity/,
+    response: `While Jim is currently employed at Versivo as a Senior Software Engineer, his profile indicates he's open to discussing new opportunities and collaborations. The best way to reach out would be through LinkedIn (linkedin.com/in/crockettjim) or email (${KNOWLEDGE_BASE.contact.email}) to discuss potential opportunities.`
+  },
+
+  // Thank you
+  {
+    pattern: /thank|thanks|appreciate/,
+    responses: [
+      "You're welcome! Feel free to ask anything else about Jim's experience or background.",
+      "Happy to help! Let me know if you have any other questions about Jim.",
+      "My pleasure! I'm here if you need to know anything else about Jim's career."
+    ]
+  },
+
+  // Goodbye
+  {
+    pattern: /bye|goodbye|see you|talk later|have a good/,
+    response: "Thanks for your interest in learning about Jim! Feel free to connect with him on LinkedIn or via email. Have a great day!"
+  }
+];
+
+// Fallback responses when no pattern matches
+const FALLBACK_RESPONSES = [
+  "That's an interesting question! Could you rephrase it or try asking about Jim's experience, skills, current role, or career history?",
+  "I want to make sure I give you accurate information. Could you ask about something specific like his roles, technical skills, or experience at particular companies?",
+  "I'm not quite sure how to answer that. Try asking me about Jim's work experience, technical expertise, certifications, or how to contact him!",
+  "Hmm, I might need more context. Feel free to ask about Jim's 25+ years of experience, his current role at Versivo, his skills in full-stack development, databases, or business intelligence!"
+];
+
+// ============================================================================
+// AVATAR IMAGES CONFIGURATION
+// ============================================================================
+// Upload your AR emoji images to a hosting service (Imgur, Cloudinary, etc.)
+// or include them in your website's assets folder, then paste the URLs here
+
+const AVATAR_IMAGES = {
+  neutral: "https://your-image-host.com/neutral-face.png",  // Resting face (Image 2 from your set)
+  talking1: "https://your-image-host.com/talking1.png",     // Slight smile (Image 1)
+  talking2: "https://your-image-host.com/talking2.png",     // Mouth open (Image 3)
+};
+
+// ============================================================================
+// GOOGLE FORMS CONFIGURATION
+// ============================================================================
+// Instructions to set up:
+// 1. Create a Google Form at forms.google.com
+// 2. Add these fields: "Question" (short answer), "Timestamp" (short answer)
+// 3. Click the 3 dots menu → "Get pre-filled link"
+// 4. Fill in dummy data and click "Get link"
+// 5. Copy the URL and extract the form ID and entry IDs
+// 6. Update the values below
+
+const GOOGLE_FORM_CONFIG = {
+  // Replace with your form's action URL
+  // Format: https://docs.google.com/forms/d/e/FORM_ID/formResponse
+  formActionUrl: "YOUR_GOOGLE_FORM_ACTION_URL_HERE",
+  
+  // Replace with your form's field entry IDs
+  // These are found in the pre-filled link (like entry.123456789)
+  questionFieldId: "entry.YOUR_QUESTION_FIELD_ID",
+  timestampFieldId: "entry.YOUR_TIMESTAMP_FIELD_ID"
+};
+
+// ============================================================================
+// CHATBOT COMPONENT - You typically don't need to edit below this line
+// ============================================================================
+
+// Animated Avatar Component
+const AnimatedAvatar = ({ isTalking }) => {
+  const [currentFrame, setCurrentFrame] = useState(0);
+  
+  // Talking animation frames cycle
+  const talkingFrames = ['neutral', 'talking1', 'talking2', 'talking1'];
+  
+  useEffect(() => {
+    if (!isTalking) {
+      setCurrentFrame(0);
+      return;
+    }
+    
+    // Cycle through talking frames
+    const interval = setInterval(() => {
+      setCurrentFrame(prev => (prev + 1) % talkingFrames.length);
+    }, 200); // Change mouth position every 200ms
+    
+    return () => clearInterval(interval);
+  }, [isTalking]);
+  
+  const currentImage = isTalking 
+    ? AVATAR_IMAGES[talkingFrames[currentFrame]]
+    : AVATAR_IMAGES.neutral;
+  
+  // Check if images are configured
+  const isConfigured = !currentImage.includes('your-image-host.com');
+  
+  return (
+    <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-r from-cyan-400 to-blue-500 p-0.5 flex-shrink-0">
+      <div className="w-full h-full rounded-full bg-slate-800 flex items-center justify-center overflow-hidden">
+        {isConfigured ? (
+          <img 
+            src={currentImage} 
+            alt="Jim's Avatar" 
+            className="w-full h-full object-cover transition-opacity duration-100"
+          />
+        ) : (
+          <Bot className="w-6 h-6 text-cyan-400" />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default function ChatPortfolio() {
+  const [messages, setMessages] = useState([
+    {
+      type: 'bot',
+      text: "Hi! I'm Jim's AI assistant. I can tell you all about his experience, skills, and career journey. What would you like to know?",
+      timestamp: new Date()
+    }
+  ]);
+  const [input, setInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const [reportedQuestions, setReportedQuestions] = useState(new Set());
+  const messagesEndRef = useRef(null);
+
+  // Submit unanswered question to Google Forms
+  const submitToGoogleForms = async (question) => {
+    // Check if Google Form is configured
+    if (GOOGLE_FORM_CONFIG.formActionUrl === "YOUR_GOOGLE_FORM_ACTION_URL_HERE") {
+      console.log("Google Form not configured yet. Question:", question);
+      return false;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append(GOOGLE_FORM_CONFIG.questionFieldId, question);
+      formData.append(GOOGLE_FORM_CONFIG.timestampFieldId, new Date().toISOString());
+
+      // Submit to Google Forms (no-cors mode since we don't need a response)
+      await fetch(GOOGLE_FORM_CONFIG.formActionUrl, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Error submitting to Google Forms:', error);
+      return false;
+    }
+  };
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isTyping]);
+
+  // Response generation using patterns
+  const generateResponse = (userMessage) => {
+    const msg = userMessage.toLowerCase();
+    
+    // Try to match against all patterns
+    for (const pattern of RESPONSE_PATTERNS) {
+      if (msg.match(pattern.pattern)) {
+        // If multiple responses, pick random one
+        if (pattern.responses) {
+          return { 
+            text: pattern.responses[Math.floor(Math.random() * pattern.responses.length)],
+            wasAnswered: true
+          };
+        }
+        // Single response
+        return { 
+          text: pattern.response,
+          wasAnswered: true
+        };
+      }
+    }
+    
+    // No match found, use fallback and track it
+    return {
+      text: FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)],
+      wasAnswered: false
+    };
+  };
+
+  const handleSend = async () => {
+    if (!input.trim()) return;
+
+    const userMessage = {
+      type: 'user',
+      text: input,
+      timestamp: new Date()
+    };
+
+    const currentInput = input;
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setIsTyping(true);
+
+    // Simulate typing delay for realism
+    await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 700));
+
+    const result = generateResponse(currentInput);
+    
+    const botMessage = {
+      type: 'bot',
+      text: result.text,
+      timestamp: new Date(),
+      userQuestion: currentInput,
+      wasAnswered: result.wasAnswered
+    };
+
+    setIsTyping(false);
+    setMessages(prev => [...prev, botMessage]);
+
+    // Auto-submit unanswered questions to Google Forms
+    if (!result.wasAnswered) {
+      await submitToGoogleForms(currentInput);
+    }
+  };
+
+  const handleReportQuestion = async (messageIndex) => {
+    const message = messages[messageIndex];
+    if (message.type === 'bot' && message.userQuestion) {
+      await submitToGoogleForms(message.userQuestion);
+      setReportedQuestions(prev => new Set([...prev, messageIndex]));
+      
+      // Clear the reported status after 3 seconds
+      setTimeout(() => {
+        setReportedQuestions(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(messageIndex);
+          return newSet;
+        });
+      }, 3000);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  const suggestedQuestions = [
+    "What's Jim's current role?",
+    "Tell me about his experience",
+    "What are his technical skills?",
+    "What's his background in databases?",
+    "How can I contact Jim?",
+    "Tell me about his time at Raymond James"
+  ];
+
+  const handleSuggestedQuestion = (question) => {
+    setInput(question);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white flex flex-col">
+      {/* Header */}
+      <header className="bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50 px-6 py-4">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <AnimatedAvatar isTalking={isTyping} />
+            <div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                Jim Crockett AI Assistant
+              </h1>
+              <p className="text-sm text-gray-400">Ask me anything about Jim's career</p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <a
+              href={KNOWLEDGE_BASE.contact.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+              title="LinkedIn"
+            >
+              <Linkedin className="w-5 h-5 text-cyan-400" />
+            </a>
+            <a
+              href={`mailto:${KNOWLEDGE_BASE.contact.email}`}
+              className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+              title="Email"
+            >
+              <Mail className="w-5 h-5 text-cyan-400" />
+            </a>
+          </div>
+        </div>
+      </header>
+
+      {/* Chat Messages */}
+      <div className="flex-1 overflow-y-auto px-6 py-8">
+        <div className="max-w-4xl mx-auto space-y-6">
+          {messages.map((message, idx) => (
+            <div
+              key={idx}
+              className={`flex gap-3 ${message.type === 'user' ? 'flex-row-reverse' : ''} animate-slide-up`}
+            >
+              {message.type === 'bot' ? (
+                <AnimatedAvatar isTalking={false} />
+              ) : (
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-gradient-to-r from-purple-400 to-pink-500">
+                  <User className="w-5 h-5 text-white" />
+                </div>
+              )}
+              <div className={`flex-1 max-w-2xl ${message.type === 'user' ? 'flex justify-end' : ''}`}>
+                <div className={`rounded-2xl px-6 py-4 ${
+                  message.type === 'bot'
+                    ? 'bg-slate-800/50 backdrop-blur-sm border border-slate-700/50'
+                    : 'bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/30'
+                }`}>
+                  <p className="text-gray-200 leading-relaxed whitespace-pre-line">{message.text}</p>
+                  <div className="flex items-center justify-between mt-2">
+                    <p className="text-xs text-gray-500">
+                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                    {message.type === 'bot' && message.userQuestion && idx > 0 && (
+                      <button
+                        onClick={() => handleReportQuestion(idx)}
+                        className={`text-xs flex items-center gap-1 transition-all ${
+                          reportedQuestions.has(idx)
+                            ? 'text-green-400'
+                            : 'text-gray-500 hover:text-cyan-400'
+                        }`}
+                        title="Report this as not helpful"
+                      >
+                        {reportedQuestions.has(idx) ? (
+                          <>
+                            <Check className="w-3 h-3" />
+                            <span>Reported</span>
+                          </>
+                        ) : (
+                          <>
+                            <ThumbsDown className="w-3 h-3" />
+                            <span>Not helpful?</span>
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {isTyping && (
+            <div className="flex gap-3 animate-fade-in">
+              <AnimatedAvatar isTalking={true} />
+              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl px-6 py-4">
+                <div className="flex gap-2">
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></div>
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+      </div>
+
+      {/* Suggested Questions */}
+      {messages.length <= 1 && (
+        <div className="px-6 pb-4">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-sm text-gray-400 mb-3 flex items-center gap-2">
+              <Sparkles className="w-4 h-4" />
+              Try asking:
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {suggestedQuestions.map((question, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSuggestedQuestion(question)}
+                  className="px-4 py-2 bg-slate-800/50 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 rounded-full text-sm transition-all duration-300 transform hover:scale-105"
+                >
+                  {question}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Input Area */}
+      <div className="bg-slate-900/95 backdrop-blur-sm border-t border-slate-700/50 px-6 py-4">
+        <div className="max-w-4xl mx-auto flex gap-3">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Ask me about Jim's experience, skills, or career..."
+            className="flex-1 bg-slate-800/50 border border-slate-700/50 rounded-xl px-6 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 transition-colors"
+          />
+          <button
+            onClick={handleSend}
+            disabled={!input.trim()}
+            className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl hover:shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-95"
+          >
+            <Send className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes slide-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-slide-up {
+          animation: slide-up 0.4s ease-out;
+        }
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.3s ease-out;
+        }
+      `}</style>
+    </div>
+  );
+}
